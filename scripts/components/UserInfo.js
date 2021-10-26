@@ -8,8 +8,7 @@ class UserInfo {
 
   // Public method which returns an object with information about the user.
   getUserInfo() {
-    this._data = { name: this._name.textContent, about: this._job.textContent };
-    return this._data;
+    return { name: this._name.textContent, about: this._job.textContent };
   }
 
   // Public method which takes new user data and adds it on the page.
