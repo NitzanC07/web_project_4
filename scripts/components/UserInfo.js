@@ -1,27 +1,22 @@
-import {
-    profileName,
-    profileDescription,
-    popupName,
-    popupDescription
-} from '../utils/constants.js';
+import { profileName, profileDescription } from "../utils/constants.js";
 
 class UserInfo {
-    constructor(name, job) {
-        this._name = name;
-        this._job = job;
-    }
+  constructor(nameSelector, jobSelector) {
+    this._name = nameSelector;
+    this._job = jobSelector;
+  }
 
-    // Public method which returns an object with information about the user.
-    getUserInfo() {
-        popupName.value = this._name;
-        popupDescription.value = this._job;
-    }
+  // Public method which returns an object with information about the user.
+  getUserInfo() {
+    this._data = { name: this._name.textContent, about: this._job.textContent };
+    return this._data;
+  }
 
-    // Public method which takes new user data and adds it on the page.
-    setUserInfo() {
-        profileName.textContent = this._name;
-        profileDescription.textContent = this._job;
-    }
+  // Public method which takes new user data and adds it on the page.
+  setUserInfo(newCardData) {
+    this._name.textContent = newCardData.name;
+    this._job.textContent = newCardData.about;
+  }
 }
 
 export default UserInfo;
