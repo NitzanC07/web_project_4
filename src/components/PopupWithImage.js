@@ -1,5 +1,5 @@
 import Popup from "../components/Popup.js";
-import * as constants from "../utils/constants.js";
+import * as constants from "../../src/utils/constants.js";
 
 class PopupWithImage extends Popup {
   open(cardData) {

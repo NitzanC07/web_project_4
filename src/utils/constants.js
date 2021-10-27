@@ -1,29 +1,36 @@
+import havana from '../images/havana.jpg';
+import vinales from '../images/vinales.jpg';
+import pelican from '../images/pelican.jpg'
+import ardeaHerodias from '../images/ardea-herodias.jpg';
+import viewFromManara from '../images/view-from-manara.jpg';
+import biriyaForest from '../images/biriya-forest.jpg';
+
 // Initialization cards on loading page.
 export const initialCards = [
   {
     name: "Oldies cars in Havana, Cuba.",
-    link: "./images/havana.jpg",
+    link: havana
   },
   {
     name: "Tobacco field in Viñales valley, Cuba.",
-    link: "./images/vinales.jpg",
+    link: vinales
   },
   {
     name: "Pelican in a lake, Sarasota FL, USA.",
-    link: "./images/pelican.jpg",
+    link: pelican
   },
   {
     name: "Great blue heron, Sarasota FL, USA.",
-    link: "./images/ardea-herodias.jpg",
+    link: ardeaHerodias
   },
   {
     name: "Sight from Manara to southern Lebanon in winter , Israel.",
-    link: "./images/view-from-manara.jpg",
+    link: viewFromManara
   },
   {
     name: "Biriya forest, Zefat, Israel",
-    link: "./images/biriya-forest.jpg",
-  },
+    link: biriyaForest
+  }
 ];
 
 export const cardTemplate = document.querySelector("#card-template").content;
