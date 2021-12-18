@@ -15,25 +15,45 @@ import {
   popupTypeImageSelector,
   popupName,
   popupDescription,
+  popupForDeleteCard
 } from "../utils/constants.js";
 import Card from "../components/Card.js";
+import Popup from "../components/Popup.js";
+import PopupWithSubmit from '../components/PopupWithSubmit';
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
+import { api } from "../components/Api.js";
 
 
-
-// Image popup.
 const imagePopup = new PopupWithImage(popupTypeImageSelector);
+
+const confirmModal = new PopupWithSubmit(popupForDeleteCard);
+confirmModal.setEventListeners()
 
 imagePopup.setEventListeners();
 
 const addNewCard = (data) => {
-  const cardObj = new Card(data, cardTemplate, () => {
-    imagePopup.open(data);
-  });
-  return cardObj.createCard();
+  const card = new Card({
+    data,
+    handleCardClick: () => {
+      imagePopup.open(data);
+    },
+    handleDeleteCard: (id) => {
+      confirmModal.open();
+      confirmModal.setAction(() => {
+        api.deleteCard(id)
+          .then((res) => {
+            console.log(`card is deleted:`, res)
+            card.removeCard();
+          })
+      })
+    }
+  },
+  cardTemplate);
+  return card.createCard();
 };
+
 const editFormValidator = new FormValidator(config, profileFormPopup);
 const addCardFormValidator = new FormValidator(config, cardFormPopup);
 
@@ -41,8 +61,18 @@ editFormValidator.enableValidation();
 addCardFormValidator.enableValidation();
 
 const items = initialCards;
-const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
-cards.renderer();
+// const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
+// cards.renderer();
+api.getInitialCards()
+.then(items => {
+  const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
+  cards.renderer();
+})
+
+api.getUserInfo()
+  .then(res => {
+    userInfo.setUserInfo({name: res.name, about: res.about})
+  })
 
 // Popup for profile details form.
 const userInfo = new UserInfo(profileName, profileDescription);
@@ -51,6 +81,8 @@ const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
   popupWithProfile.close();
 });
 popupWithProfile.setEventListeners();
+
+
 
 const openEditButton = document.querySelector(".profile__edit-button");
 openEditButton.addEventListener("click", () => {
@@ -63,9 +95,15 @@ openEditButton.addEventListener("click", () => {
 
 // Popup for add card form.
 const popupWithAddCard = new PopupWithForm(cardFormPopupSelector, () => {
-  cards.addItem(addNewCard(popupWithAddCard.getInputsValues()));
-  popupWithAddCard.close();
-});
+  const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
+  const data = popupWithAddCard.getInputsValues()
+  api.createCard(data)
+    .then(res => {
+      cards.addItem(addNewCard(res));
+      popupWithAddCard.close();
+    });
+})
+  
 popupWithAddCard.setEventListeners();
 
 const openAddCardForm = document.querySelector(".profile__add-button");

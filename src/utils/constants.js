@@ -49,6 +49,7 @@ export const profileFormPopup = ".popup__form_profile";
 export const profileFormPopupSelector = ".popup_type_edit-profile";
 export const cardFormPopup = ".popup__form_add-card";
 export const cardFormPopupSelector = ".popup_type_add-card";
+export const popupForDeleteCard = ".popup_type_delete-card";
 export const profileName = document.querySelector(".profile__name");
 export const profileDescription = document.querySelector(
   ".profile__description"
