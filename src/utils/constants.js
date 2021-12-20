@@ -1,37 +1,37 @@
-import havana from '../images/havana.jpg';
-import vinales from '../images/vinales.jpg';
-import pelican from '../images/pelican.jpg'
-import ardeaHerodias from '../images/ardea-herodias.jpg';
-import viewFromManara from '../images/view-from-manara.jpg';
-import biriyaForest from '../images/biriya-forest.jpg';
+// import havana from '../images/havana.jpg';
+// import vinales from '../images/vinales.jpg';
+// import pelican from '../images/pelican.jpg'
+// import ardeaHerodias from '../images/ardea-herodias.jpg';
+// import viewFromManara from '../images/view-from-manara.jpg';
+// import biriyaForest from '../images/biriya-forest.jpg';
 
 // Initialization cards on loading page.
-export const initialCards = [
-  {
-    name: "Oldies cars in Havana, Cuba.",
-    link: havana
-  },
-  {
-    name: "Tobacco field in Viñales valley, Cuba.",
-    link: vinales
-  },
-  {
-    name: "Pelican in a lake, Sarasota FL, USA.",
-    link: pelican
-  },
-  {
-    name: "Great blue heron, Sarasota FL, USA.",
-    link: ardeaHerodias
-  },
-  {
-    name: "Sight from Manara to southern Lebanon in winter , Israel.",
-    link: viewFromManara
-  },
-  {
-    name: "Biriya forest, Zefat, Israel",
-    link: biriyaForest
-  }
-];
+// export const initialCards = [
+//   {
+//     name: "Oldies cars in Havana, Cuba.",
+//     link: havana
+//   },
+//   {
+//     name: "Tobacco field in Viñales valley, Cuba.",
+//     link: vinales
+//   },
+//   {
+//     name: "Pelican in a lake, Sarasota FL, USA.",
+//     link: pelican
+//   },
+//   {
+//     name: "Great blue heron, Sarasota FL, USA.",
+//     link: ardeaHerodias
+//   },
+//   {
+//     name: "Sight from Manara to southern Lebanon in winter , Israel.",
+//     link: viewFromManara
+//   },
+//   {
+//     name: "Biriya forest, Zefat, Israel",
+//     link: biriyaForest
+//   }
+// ];
 
 export const cardTemplate = document.querySelector("#card-template").content;
 export const cardsContainer = ".cards__container";

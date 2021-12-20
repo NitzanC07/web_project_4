@@ -25,6 +25,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import { api } from "../components/Api.js";
 
+let userId;
 
 const imagePopup = new PopupWithImage(popupTypeImageSelector);
 
@@ -33,36 +34,12 @@ confirmModal.setEventListeners()
 
 imagePopup.setEventListeners();
 
-const addNewCard = (data) => {
-  const card = new Card({
-    data,
-    handleCardClick: () => {
-      imagePopup.open(data);
-    },
-    handleDeleteCard: (id) => {
-      confirmModal.open();
-      confirmModal.setAction(() => {
-        api.deleteCard(id)
-          .then((res) => {
-            console.log(`card is deleted:`, res)
-            card.removeCard();
-          })
-      })
-    }
-  },
-  cardTemplate);
-  return card.createCard();
-};
-
 const editFormValidator = new FormValidator(config, profileFormPopup);
 const addCardFormValidator = new FormValidator(config, cardFormPopup);
 
 editFormValidator.enableValidation();
 addCardFormValidator.enableValidation();
 
-const items = initialCards;
-// const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
-// cards.renderer();
 api.getInitialCards()
 .then(items => {
   const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
@@ -72,7 +49,28 @@ api.getInitialCards()
 api.getUserInfo()
   .then(res => {
     userInfo.setUserInfo({name: res.name, about: res.about})
+    userId = res._id
   })
+
+const addNewCard = (data) => {
+  const card = new Card({
+    data,
+    handleCardClick: () => {
+      imagePopup.open(data);
+    },
+    handleDeleteCard: (userId) => {
+      confirmModal.open();
+      confirmModal.setAction(() => {
+        api.deleteCard(data._id)
+          .then((res) => {
+            console.log("card is deleted", res);
+            card.removeCard();
+          })
+      })
+    }
+  }, cardTemplate, userId);
+  return card.createCard();
+};
 
 // Popup for profile details form.
 const userInfo = new UserInfo(profileName, profileDescription);
@@ -95,11 +93,12 @@ openEditButton.addEventListener("click", () => {
 
 // Popup for add card form.
 const popupWithAddCard = new PopupWithForm(cardFormPopupSelector, () => {
-  const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
   const data = popupWithAddCard.getInputsValues()
+  
   api.createCard(data)
-    .then(res => {
-      cards.addItem(addNewCard(res));
+    .then(item => {
+      const cards = new Section({ item, renderer: addNewCard }, cardsContainer);
+      cards.addItem(addNewCard(item));
       popupWithAddCard.close();
     });
 })

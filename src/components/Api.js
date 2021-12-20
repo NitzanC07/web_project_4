@@ -1,9 +1,7 @@
-// const customFetch = (url, headers) => {
-//   fetch(url, headers)
-//     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-//     .catch(err => console.log(err))
-// }
-
+const customFetch = (url, headers) =>
+  fetch(url, headers)
+    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
+    .catch(err => console.log(err))
 
 class Api {
     constructor({baseUrl, headers}) {
@@ -14,38 +12,31 @@ class Api {
   // other methods for working with the API
 
   getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
-        headers: this._headers
+    return customFetch(`${this._baseUrl}/cards`, {
+        headers: this._headers,
+        method: 'GET' // default option
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .catch(err => console.log(err))
   }
   
   getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
+    return customFetch(`${this._baseUrl}/users/me`, {
         headers: this._headers
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .catch(err => console.log(err))
   }
 
   createCard(data) {
-    return fetch(`${this._baseUrl}/cards`, {
+    return customFetch(`${this._baseUrl}/cards`, {
         headers: this._headers, 
         method: 'POST',
         body: JSON.stringify(data)
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .catch(err => console.log("Error: ", err))
   }
 
   deleteCard(cardId) {
-    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+    return customFetch(`${this._baseUrl}/cards/${cardId}`, {
         headers: this._headers, 
         method: 'DELETE',
     })
-    .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .catch(err => console.log("Error: ", err))
   }
 
 }

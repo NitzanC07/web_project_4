@@ -1,11 +1,12 @@
 class Card {
-  constructor({data, handleCardClick, handleDeleteCard}, cardTemplate) {
+  constructor({data, handleCardClick, handleDeleteCard}, cardTemplate, userId) {
     this._template = cardTemplate;
     this._name = data.name;
     this._link = data.link;
+    this._ownerId = data.owner._id;
     this._handleCardClick = handleCardClick;
     this._handleDeleteCard = handleDeleteCard;
-    this._id = data._id;
+    this._userId = userId;
   }
 
   _setEventListeners() {
@@ -17,7 +18,10 @@ class Card {
 
     // Delete buttons.
     this._card.querySelector(".cards__delete-button")
-      .addEventListener("click", () =>  this._handleDeleteCard(this._id));
+      .addEventListener("click", () =>  this._handleDeleteCard(this._userId));
+    if(this._ownerId !== this._userId) {
+      this._card.querySelector(".cards__delete-button").style.display = "none";
+    }
 
     // Show image as popup.
     const cardData = { name: this._name, link: this._link };
