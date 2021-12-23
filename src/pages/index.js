@@ -23,15 +23,21 @@ import PopupWithSubmit from '../components/PopupWithSubmit';
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-import { api } from "../components/Api.js";
+import Api from "../components/Api.js";
+
+const api = new Api({
+  baseUrl: "https://around.nomoreparties.co/v1/group-12",
+  headers: {
+    authorization: "38a23878-64ce-4abb-ae0d-d30d11cc9a38",
+    "Content-Type": "application/json"
+  }
+});
+
+// Token: 38a23878-64ce-4abb-ae0d-d30d11cc9a38 Group ID: group-12
 
 let userId;
 
 const imagePopup = new PopupWithImage(popupTypeImageSelector);
-
-const confirmModal = new PopupWithSubmit(popupForDeleteCard);
-confirmModal.setEventListeners()
-
 imagePopup.setEventListeners();
 
 const editFormValidator = new FormValidator(config, profileFormPopup);
@@ -52,15 +58,20 @@ api.getUserInfo()
     userId = res._id
   })
 
+
+  const popupAskForDelete = new PopupWithSubmit(popupForDeleteCard);
+  popupAskForDelete.setEventListeners()
+
 const addNewCard = (data) => {
   const card = new Card({
     data,
     handleCardClick: () => {
       imagePopup.open(data);
     },
-    handleDeleteCard: (userId) => {
-      confirmModal.open();
-      confirmModal.setAction(() => {
+    handleDeleteCard: () => {
+      popupAskForDelete.open();
+      popupAskForDelete.setEventListeners();
+      popupAskForDelete.setAction(() => {
         api.deleteCard(data._id)
           .then((res) => {
             console.log("card is deleted", res);

@@ -40,10 +40,7 @@ class Popup {
   close() {
     this._popup.classList.remove("popup_open");
     document.removeEventListener("keydown", this._handleEscClose);
-    document.removeEventListener(
-      "mousedown",
-      this._handleClosePopupwWithOverlay
-    );
+    document.removeEventListener("mousedown", this._handleClosePopupwWithOverlay);
   }
 }
 

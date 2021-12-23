@@ -40,13 +40,5 @@ class Api {
   }
 
 }
-  
-  export const api = new Api({
-    baseUrl: "https://around.nomoreparties.co/v1/group-12",
-    headers: {
-      authorization: "38a23878-64ce-4abb-ae0d-d30d11cc9a38",
-      "Content-Type": "application/json"
-    }
-  });
 
-  // Token: 38a23878-64ce-4abb-ae0d-d30d11cc9a38 Group ID: group-12
+export default Api;

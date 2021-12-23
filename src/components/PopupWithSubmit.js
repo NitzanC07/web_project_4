@@ -12,6 +12,7 @@ class PopupWithSubmit extends Popup {
       this.close();
     });
   }
+
 }
 
 export default PopupWithSubmit;
