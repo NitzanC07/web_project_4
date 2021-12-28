@@ -68,9 +68,10 @@ const addNewCard = (data) => {
       imagePopup.open(data);
     },
     handleLikeIcon: (id) => {
+      console.log("id", id);
       api.likeCard(id)
         .then((res) => {
-          console.log("res", res);
+          // console.log("res", res);
         })
     },
     handleDeleteCard: () => {
