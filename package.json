@@ -25,8 +25,16 @@
     "mini-css-extract-plugin": "^2.4.3",
     "postcss-loader": "^6.2.0",
     "prettier": "2.4.1",
-    "webpack": "^5.59.1",
+    "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^3.11.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NitzanC07/web_project_4.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NitzanC07/web_project_4/issues"
+  },
+  "homepage": "https://github.com/NitzanC07/web_project_4#readme"
 }

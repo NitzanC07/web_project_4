@@ -39,6 +39,20 @@ class Api {
     })
   }
 
+  likeCard(cardId) {
+    return customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+        headers: this._headers, 
+        method: 'PUT',
+    })
+  }
+
+  dislikeCard(cardId) {
+    return customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+        headers: this._headers, 
+        method: 'DELETE',
+    })
+  }
+
 }
 
 export default Api;

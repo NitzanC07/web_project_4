@@ -25,6 +25,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 
+// Token: 38a23878-64ce-4abb-ae0d-d30d11cc9a38 Group ID: group-12
 const api = new Api({
   baseUrl: "https://around.nomoreparties.co/v1/group-12",
   headers: {
@@ -32,8 +33,6 @@ const api = new Api({
     "Content-Type": "application/json"
   }
 });
-
-// Token: 38a23878-64ce-4abb-ae0d-d30d11cc9a38 Group ID: group-12
 
 let userId;
 
@@ -67,6 +66,12 @@ const addNewCard = (data) => {
     data,
     handleCardClick: () => {
       imagePopup.open(data);
+    },
+    handleLikeIcon: (id) => {
+      api.likeCard(id)
+        .then((res) => {
+          console.log("res", res);
+        })
     },
     handleDeleteCard: () => {
       popupAskForDelete.open();
