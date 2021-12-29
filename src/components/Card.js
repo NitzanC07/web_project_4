@@ -14,9 +14,8 @@ class Card {
 
   _setEventListeners() {
     // Like buttons.
-    const likeButton = this._card.querySelector(".cards__like-button");
-      likeButton.addEventListener("click", () => this._handleLikeIcon(this._cardId, this._userId, this._likes, likeButton));
-      // buttonLike.classList.add("cards__like-button_active");
+    this._card.querySelector(".cards__like-button")
+      .addEventListener("click", () => this._handleLikeIcon(this._cardId, this._userId, this._likes));
 
     // Delete buttons.
     this._card.querySelector(".cards__delete-button")
@@ -38,6 +37,17 @@ class Card {
     this._card = null;
   }
 
+  likeCard(newLikes) {
+    this._likes = newLikes;
+    this._card.querySelector(".cards__like-button").classList.add("cards__like-button_active");
+    this._card.querySelector(".cards__likes-counter").textContent = this._likes.length;
+  }
+  dislikeCard(newLikes) {
+    this._likes = newLikes;
+    this._card.querySelector(".cards__like-button").classList.remove("cards__like-button_active");
+    this._card.querySelector(".cards__likes-counter").textContent = this._likes.length;
+  }
+
   createCard() {
     const card = this._template
       .querySelector(".cards__card")
@@ -51,6 +61,11 @@ class Card {
 
     this._card = card;
     this._card.querySelector(".cards__likes-counter").textContent = this._likes.length 
+    
+    let isLiked = this._likes.some(person => person._id === this._userId)
+    if (isLiked) {
+      this.likeCard(this._likes)
+    }
 
     this._setEventListeners();
     return this._card;

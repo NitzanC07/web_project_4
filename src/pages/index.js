@@ -67,21 +67,19 @@ const addNewCard = (data) => {
     handleCardClick: () => {
       imagePopup.open(data);
     },
-    handleLikeIcon: (cardId, userId, likesArray, likeButton) => {
+    handleLikeIcon: (cardId, userId, likesArray) => {
       if (!likesArray.find(user => user._id === userId )) {
         console.log("LIKE");
-        console.log(likeButton);
-        likeButton.classList.add("cards__like-button_active");
         api.likeCard(cardId)
         .then((res) => {
+          card.likeCard(res.likes)
           console.log("Added like to card: ", res);
         })
       } else {
         console.log("DISLIKE");
-        console.log(likeButton);
-        likeButton.classList.remove("cards__like-button_active");
         api.dislikeCard(cardId)
         .then((res) => {
+          card.dislikeCard(res.likes)
           console.log("Removed like from card: ", res);
         })
       }
@@ -108,8 +106,6 @@ const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
   popupWithProfile.close();
 });
 popupWithProfile.setEventListeners();
-
-
 
 const openEditButton = document.querySelector(".profile__edit-button");
 openEditButton.addEventListener("click", () => {
