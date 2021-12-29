@@ -9,15 +9,14 @@ class Card {
     this._handleDeleteCard = handleDeleteCard;
     this._userId = userId;
     this._likes = data.likes;
+    this._cardId = data._id;
   }
 
   _setEventListeners() {
     // Like buttons.
-    this._card.querySelector(".cards__like-button")
-      .addEventListener("click", () => this._handleLikeIcon(this._userId));
-      // {
-        // likeButton.classList.toggle("cards__like-button_active");
-      // });
+    const likeButton = this._card.querySelector(".cards__like-button");
+      likeButton.addEventListener("click", () => this._handleLikeIcon(this._cardId, this._userId, this._likes, likeButton));
+      // buttonLike.classList.add("cards__like-button_active");
 
     // Delete buttons.
     this._card.querySelector(".cards__delete-button")

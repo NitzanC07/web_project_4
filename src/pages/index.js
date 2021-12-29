@@ -67,12 +67,24 @@ const addNewCard = (data) => {
     handleCardClick: () => {
       imagePopup.open(data);
     },
-    handleLikeIcon: (id) => {
-      console.log("id", id);
-      api.likeCard(id)
+    handleLikeIcon: (cardId, userId, likesArray, likeButton) => {
+      if (!likesArray.find(user => user._id === userId )) {
+        console.log("LIKE");
+        console.log(likeButton);
+        likeButton.classList.add("cards__like-button_active");
+        api.likeCard(cardId)
         .then((res) => {
-          // console.log("res", res);
+          console.log("Added like to card: ", res);
         })
+      } else {
+        console.log("DISLIKE");
+        console.log(likeButton);
+        likeButton.classList.remove("cards__like-button_active");
+        api.dislikeCard(cardId)
+        .then((res) => {
+          console.log("Removed like from card: ", res);
+        })
+      }
     },
     handleDeleteCard: () => {
       popupAskForDelete.open();

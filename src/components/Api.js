@@ -40,6 +40,7 @@ class Api {
   }
 
   likeCard(cardId) {
+    console.log("cardId", cardId);
     return customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
         headers: this._headers, 
         method: 'PUT',
