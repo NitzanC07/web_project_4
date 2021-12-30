@@ -53,6 +53,7 @@ api.getInitialCards()
 
 api.getUserInfo()
   .then(res => {
+    console.log(res);
     userInfo.setUserInfo({name: res.name, about: res.about})
     userId = res._id
   })
@@ -69,18 +70,16 @@ const addNewCard = (data) => {
     },
     handleLikeIcon: (cardId, userId, likesArray) => {
       if (!likesArray.find(user => user._id === userId )) {
-        console.log("LIKE");
         api.likeCard(cardId)
         .then((res) => {
           card.likeCard(res.likes)
-          console.log("Added like to card: ", res);
+          console.log("Added like to card: ", res.likes);
         })
       } else {
-        console.log("DISLIKE");
         api.dislikeCard(cardId)
         .then((res) => {
           card.dislikeCard(res.likes)
-          console.log("Removed like from card: ", res);
+          console.log("Removed like from card: ", res.likes);
         })
       }
     },
@@ -102,9 +101,15 @@ const addNewCard = (data) => {
 // Popup for profile details form.
 const userInfo = new UserInfo(profileName, profileDescription);
 const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
-  userInfo.setUserInfo(popupWithProfile.getInputsValues());
+  let profileData = popupWithProfile.getInputsValues();
+  userInfo.setUserInfo(profileData);
+  api.setUserInfo(profileData)
+    .then((res) => {
+      console.log("res", res);
+    })
   popupWithProfile.close();
 });
+
 popupWithProfile.setEventListeners();
 
 const openEditButton = document.querySelector(".profile__edit-button");

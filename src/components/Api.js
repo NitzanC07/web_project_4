@@ -20,7 +20,16 @@ class Api {
   
   getUserInfo() {
     return customFetch(`${this._baseUrl}/users/me`, {
-        headers: this._headers
+        headers: this._headers,
+        method: 'GET'
+    })
+  }
+
+  setUserInfo(data) {
+    return customFetch(`${this._baseUrl}/users/me`, {
+        headers: this._headers,
+        mathod: 'PATCH',
+        body: JSON.stringify(data)
     })
   }
 
@@ -40,7 +49,6 @@ class Api {
   }
 
   likeCard(cardId) {
-    console.log("cardId", cardId);
     return customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
         headers: this._headers, 
         method: 'PUT',

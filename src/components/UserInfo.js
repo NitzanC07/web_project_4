@@ -12,9 +12,9 @@ class UserInfo {
   }
 
   // Public method which takes new user data and adds it on the page.
-  setUserInfo(newCardData) {
-    this._name.textContent = newCardData.name;
-    this._job.textContent = newCardData.about;
+  setUserInfo(newData) {
+    this._name.textContent = newData.name;
+    this._job.textContent = newData.about;
   }
 }
 
