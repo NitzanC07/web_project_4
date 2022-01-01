@@ -25,10 +25,17 @@ class Api {
     })
   }
 
+  changeAvatar() {
+    return customFetch(`${this._baseUrl}/users/me/avatar`, {
+        headers: this._headers,
+        method: 'PATCH'
+    })
+  }
+
   setUserInfo(data) {
     return customFetch(`${this._baseUrl}/users/me`, {
         headers: this._headers,
-        mathod: 'PATCH',
+        method: 'PATCH',
         body: JSON.stringify(data)
     })
   }

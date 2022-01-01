@@ -15,7 +15,8 @@ import {
   popupTypeImageSelector,
   popupName,
   popupDescription,
-  popupForDeleteCard
+  popupForDeleteCard,
+  changeAvatarPopupSelector
 } from "../utils/constants.js";
 import Card from "../components/Card.js";
 import Popup from "../components/Popup.js";
@@ -41,9 +42,11 @@ imagePopup.setEventListeners();
 
 const editFormValidator = new FormValidator(config, profileFormPopup);
 const addCardFormValidator = new FormValidator(config, cardFormPopup);
+const avatarFormValidator = new FormValidator(config, changeAvatarPopupSelector);
 
 editFormValidator.enableValidation();
 addCardFormValidator.enableValidation();
+avatarFormValidator.enableValidation();
 
 api.getInitialCards()
 .then(items => {
@@ -53,7 +56,7 @@ api.getInitialCards()
 
 api.getUserInfo()
   .then(res => {
-    console.log(res);
+    console.log("profile detailes from reload page: ", res);
     userInfo.setUserInfo({name: res.name, about: res.about})
     userId = res._id
   })
@@ -102,13 +105,18 @@ const addNewCard = (data) => {
 const userInfo = new UserInfo(profileName, profileDescription);
 const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
   let profileData = popupWithProfile.getInputsValues();
+  console.log("profile data", profileData);
   userInfo.setUserInfo(profileData);
+
   api.setUserInfo(profileData)
-    .then((res) => {
-      console.log("res", res);
-    })
+  .then((res) => {
+    console.log("res", res);
+  })
+  
   popupWithProfile.close();
 });
+
+
 
 popupWithProfile.setEventListeners();
 
@@ -120,6 +128,20 @@ openEditButton.addEventListener("click", () => {
   popupDescription.value = userData.about;
   editFormValidator.resetValidation();
 });
+
+
+const avatarPopup = new PopupWithForm(changeAvatarPopupSelector, () => { 
+  console.log("Avatar Form");
+})
+avatarPopup.setEventListeners();
+
+const openEditAvatar = document.querySelector(".profile__avatar");
+openEditAvatar.addEventListener("click", () => {
+  avatarPopup.open();
+  let avatarUrl = avatarPopup.getInputsValues();
+  console.log("avatar URL", avatarUrl);
+  editFormValidator.resetValidation();
+})
 
 // Popup for add card form.
 const popupWithAddCard = new PopupWithForm(cardFormPopupSelector, () => {

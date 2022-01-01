@@ -46,6 +46,7 @@ export const config = {
 };
 
 export const profileFormPopup = ".popup__form_profile";
+export const changeAvatarPopupSelector = ".popup_type_avatar";
 export const profileFormPopupSelector = ".popup_type_edit-profile";
 export const cardFormPopup = ".popup__form_add-card";
 export const cardFormPopupSelector = ".popup_type_add-card";

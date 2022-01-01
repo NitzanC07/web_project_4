@@ -16,6 +16,10 @@ class UserInfo {
     this._name.textContent = newData.name;
     this._job.textContent = newData.about;
   }
+  // Public method which input the new avatar to the page.
+  setUserAvatar(newAvatar) {
+
+  }
 }
 
 export default UserInfo;
