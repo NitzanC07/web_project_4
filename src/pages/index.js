@@ -12,6 +12,7 @@ import {
   cardFormPopupSelector,
   profileName,
   profileDescription,
+  avatarPicture,
   popupTypeImageSelector,
   popupName,
   popupDescription,
@@ -57,7 +58,8 @@ api.getInitialCards()
 api.getUserInfo()
   .then(res => {
     console.log("profile detailes from reload page: ", res);
-    userInfo.setUserInfo({name: res.name, about: res.about})
+    userInfo.setUserInfo({name: res.name, about: res.about});
+    userInfo.setUserAvatar({avatar: res.avatar});
     userId = res._id
   })
 
@@ -76,13 +78,13 @@ const addNewCard = (data) => {
         api.likeCard(cardId)
         .then((res) => {
           card.likeCard(res.likes)
-          console.log("Added like to card: ", res.likes);
+          console.log("Added like to card: ", res);
         })
       } else {
         api.dislikeCard(cardId)
         .then((res) => {
           card.dislikeCard(res.likes)
-          console.log("Removed like from card: ", res.likes);
+          console.log("Removed like from card: ", res);
         })
       }
     },
@@ -102,7 +104,7 @@ const addNewCard = (data) => {
 };
 
 // Popup for profile details form.
-const userInfo = new UserInfo(profileName, profileDescription);
+const userInfo = new UserInfo(profileName, profileDescription, avatarPicture);
 const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
   let profileData = popupWithProfile.getInputsValues();
   console.log("profile data", profileData);

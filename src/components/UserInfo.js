@@ -1,9 +1,10 @@
 import { profileName, profileDescription } from "../../src/utils/constants.js";
 
 class UserInfo {
-  constructor(nameSelector, jobSelector) {
+  constructor(nameSelector, jobSelector, avatarSelector) {
     this._name = nameSelector;
     this._job = jobSelector;
+    this._avatar = avatarSelector;
   }
 
   // Public method which returns an object with information about the user.
@@ -18,7 +19,7 @@ class UserInfo {
   }
   // Public method which input the new avatar to the page.
   setUserAvatar(newAvatar) {
-
+    console.log(newAvatar);
   }
 }
 

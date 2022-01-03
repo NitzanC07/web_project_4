@@ -65,7 +65,6 @@ class FormValidator {
     const inputsList = this._inputsList();
     inputsList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
-        console.log("input value",inputElement.value, "\nthis", this);
         this._checkInputValidity(inputElement);
         this._toggleButtonState();
       });

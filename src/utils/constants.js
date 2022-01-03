@@ -52,6 +52,7 @@ export const cardFormPopup = ".popup__form_add-card";
 export const cardFormPopupSelector = ".popup_type_add-card";
 export const popupForDeleteCard = ".popup_type_delete-card";
 export const profileName = document.querySelector(".profile__name");
+export const avatarPicture = document.querySelector(".profile__avatar-picture");
 export const profileDescription = document.querySelector(
   ".profile__description"
 );
