@@ -59,7 +59,7 @@ api.getUserInfo()
   .then(res => {
     console.log("profile detailes from reload page: ", res);
     userInfo.setUserInfo({name: res.name, about: res.about});
-    userInfo.setUserAvatar({avatar: res.avatar});
+    userInfo.setUserAvatar(res.avatar);
     userId = res._id
   })
 
@@ -107,9 +107,7 @@ const addNewCard = (data) => {
 const userInfo = new UserInfo(profileName, profileDescription, avatarPicture);
 const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
   let profileData = popupWithProfile.getInputsValues();
-  console.log("profile data", profileData);
   userInfo.setUserInfo(profileData);
-
   api.setUserInfo(profileData)
   .then((res) => {
     console.log("res", res);
@@ -133,15 +131,19 @@ openEditButton.addEventListener("click", () => {
 
 
 const avatarPopup = new PopupWithForm(changeAvatarPopupSelector, () => { 
-  console.log("Avatar Form");
-})
+  let avatarUrl = avatarPopup.getInputsValues();
+  userInfo.setUserAvatar(avatarUrl.link);
+  api.changeAvatar(avatarUrl)
+    .then((res) => {
+      console.log("res", res);
+    });
+  avatarPopup.close()
+});
 avatarPopup.setEventListeners();
 
 const openEditAvatar = document.querySelector(".profile__avatar");
 openEditAvatar.addEventListener("click", () => {
   avatarPopup.open();
-  let avatarUrl = avatarPopup.getInputsValues();
-  console.log("avatar URL", avatarUrl);
   editFormValidator.resetValidation();
 })
 

@@ -19,7 +19,7 @@ class UserInfo {
   }
   // Public method which input the new avatar to the page.
   setUserAvatar(newAvatar) {
-    console.log(newAvatar);
+    this._avatar.style = `background-image: url(${newAvatar});`
   }
 }
 
