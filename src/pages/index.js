@@ -129,7 +129,6 @@ openEditButton.addEventListener("click", () => {
   editFormValidator.resetValidation();
 });
 
-
 const avatarPopup = new PopupWithForm(changeAvatarPopupSelector, () => { 
   let avatarUrl = avatarPopup.getInputsValues();
   userInfo.setUserAvatar(avatarUrl.link);
