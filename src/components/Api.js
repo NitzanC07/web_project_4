@@ -26,7 +26,6 @@ class Api {
   }
 
   changeAvatar(newAvatar) {
-    console.log("newAvatar", newAvatar);
     return customFetch(`${this._baseUrl}/users/me/avatar`, {
         headers: this._headers,
         method: 'PATCH',

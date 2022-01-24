@@ -7,7 +7,6 @@ import {
   config,
   cardFormPopup,
   cardsContainer,
-  initialCards,
   profileFormPopupSelector,
   cardFormPopupSelector,
   profileName,
@@ -78,19 +77,18 @@ const addNewCard = (data) => {
         api.likeCard(cardId)
         .then((res) => {
           card.likeCard(res.likes)
-          console.log("Added like to card: ", res);
+          console.log("Added like to card: ", res.likes);
         })
       } else {
         api.dislikeCard(cardId)
         .then((res) => {
           card.dislikeCard(res.likes)
-          console.log("Removed like from card: ", res);
+          console.log("Removed like from card: ", res.likes);
         })
       }
     },
     handleDeleteCard: () => {
       popupAskForDelete.open();
-      popupAskForDelete.setEventListeners();
       popupAskForDelete.setAction(() => {
         api.deleteCard(data._id)
           .then((res) => {
@@ -131,10 +129,10 @@ openEditButton.addEventListener("click", () => {
 
 const avatarPopup = new PopupWithForm(changeAvatarPopupSelector, () => { 
   let avatarUrl = avatarPopup.getInputsValues();
-  userInfo.setUserAvatar(avatarUrl.link);
+  // userInfo.setUserAvatar(avatarUrl.link);
   api.changeAvatar(avatarUrl)
     .then((res) => {
-      console.log("res", res);
+      userInfo.setUserAvatar(res.avatar);
     });
   avatarPopup.close()
 });
