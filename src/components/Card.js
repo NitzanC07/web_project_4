@@ -14,14 +14,14 @@ class Card {
 
   _setEventListeners() {
     // Like buttons.
-    this._card.querySelector(".cards__like-button")
-      .addEventListener("click", () => this._handleLikeIcon(this._cardId, this._userId, this._likes));
+    // const likeButton = this._card.querySelector(".cards__like-button");
+    this._likeButton.addEventListener("click", () => this._handleLikeIcon(this._cardId, this._userId, this._likes));
 
     // Delete buttons.
-    this._card.querySelector(".cards__delete-button")
-      .addEventListener("click", () =>  this._handleDeleteCard(this._userId));
+    const deleteButton = this._card.querySelector(".cards__delete-button");
+    deleteButton.addEventListener("click", () =>  this._handleDeleteCard(this._userId));
     if(this._ownerId !== this._userId) {
-      this._card.querySelector(".cards__delete-button").style.display = "none";
+      deleteButton.style.display = "none";
     }
 
     // Show image as popup.
@@ -39,19 +39,17 @@ class Card {
 
   likeCard(newLikes) {
     this._likes = newLikes;
-    this._card.querySelector(".cards__like-button").classList.add("cards__like-button_active");
-    this._card.querySelector(".cards__likes-counter").textContent = this._likes.length;
+    this._likeButton.classList.add("cards__like-button_active");
+    this._likesCounter.textContent = this._likes.length;
   }
   dislikeCard(newLikes) {
     this._likes = newLikes;
-    this._card.querySelector(".cards__like-button").classList.remove("cards__like-button_active");
-    this._card.querySelector(".cards__likes-counter").textContent = this._likes.length;
+    this._likeButton.classList.remove("cards__like-button_active");
+    this._likesCounter.textContent = this._likes.length;
   }
 
   createCard() {
-    const card = this._template
-      .querySelector(".cards__card")
-      .cloneNode(true);
+    const card = this._template.querySelector(".cards__card").cloneNode(true);
     const img = card.querySelector(".cards__image");
     img.setAttribute("src", this._link);
     img.setAttribute("alt", this._name);
@@ -60,8 +58,10 @@ class Card {
     cardTitle.textContent = this._name;
 
     this._card = card;
-    this._card.querySelector(".cards__likes-counter").textContent = this._likes.length 
-    
+    this._likeButton = this._card.querySelector(".cards__like-button");
+    this._likesCounter = this._card.querySelector(".cards__likes-counter")
+    this._likesCounter.textContent = this._likes.length 
+
     let isLiked = this._likes.some(person => person._id === this._userId)
     if (isLiked) {
       this.likeCard(this._likes)

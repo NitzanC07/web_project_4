@@ -16,7 +16,9 @@ import {
   popupName,
   popupDescription,
   popupForDeleteCard,
-  changeAvatarPopupSelector
+  changeAvatarPopupSelector, 
+  popupImage,
+  popupImageDescription
 } from "../utils/constants.js";
 import Card from "../components/Card.js";
 import Popup from "../components/Popup.js";
@@ -48,11 +50,14 @@ editFormValidator.enableValidation();
 addCardFormValidator.enableValidation();
 avatarFormValidator.enableValidation();
 
+
+
 api.getInitialCards()
 .then(items => {
   const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
   cards.renderer();
 })
+.catch(err => console.log(err));
 
 api.getUserInfo()
   .then(res => {
@@ -61,6 +66,7 @@ api.getUserInfo()
     userInfo.setUserAvatar(res.avatar);
     userId = res._id
   })
+  .catch(err => console.log(err));
 
 
   const popupAskForDelete = new PopupWithSubmit(popupForDeleteCard);
@@ -70,7 +76,7 @@ const addNewCard = (data) => {
   const card = new Card({
     data,
     handleCardClick: () => {
-      imagePopup.open(data);
+      imagePopup.open(data, popupImage, popupImageDescription);
     },
     handleLikeIcon: (cardId, userId, likesArray) => {
       if (!likesArray.find(user => user._id === userId )) {
@@ -79,12 +85,14 @@ const addNewCard = (data) => {
           card.likeCard(res.likes)
           console.log("Added like to card: ", res.likes);
         })
+        .catch(err => console.log(err));
       } else {
         api.dislikeCard(cardId)
         .then((res) => {
           card.dislikeCard(res.likes)
           console.log("Removed like from card: ", res.likes);
         })
+        .catch(err => console.log(err));
       }
     },
     handleDeleteCard: () => {
@@ -95,6 +103,8 @@ const addNewCard = (data) => {
             console.log("card is deleted", res);
             card.removeCard();
           })
+          .catch(err => console.log(err));
+          popupAskForDelete.close();
       })
     }
   }, cardTemplate, userId);
@@ -104,14 +114,14 @@ const addNewCard = (data) => {
 // Popup for profile details form.
 const userInfo = new UserInfo(profileName, profileDescription, avatarPicture);
 const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
-  let profileData = popupWithProfile.getInputsValues();
+const profileData = popupWithProfile.getInputsValues();
   userInfo.setUserInfo(profileData);
   api.setUserInfo(profileData)
   .then((res) => {
     console.log("res", res);
+    popupWithProfile.close();
   })
-  
-  popupWithProfile.close();
+  .catch(err => console.log(err));
 });
 
 
@@ -121,27 +131,27 @@ popupWithProfile.setEventListeners();
 const openEditButton = document.querySelector(".profile__edit-button");
 openEditButton.addEventListener("click", () => {
   popupWithProfile.open();
-  const userData = userInfo.getUserInfo(profileName, profileDescription);
+  const userData = userInfo.getUserInfo();
   popupName.value = userData.name;
   popupDescription.value = userData.about;
   editFormValidator.resetValidation();
 });
 
 const avatarPopup = new PopupWithForm(changeAvatarPopupSelector, () => { 
-  let avatarUrl = avatarPopup.getInputsValues();
-  // userInfo.setUserAvatar(avatarUrl.link);
+const avatarUrl = avatarPopup.getInputsValues();
   api.changeAvatar(avatarUrl)
     .then((res) => {
       userInfo.setUserAvatar(res.avatar);
-    });
-  avatarPopup.close()
+      avatarPopup.close()
+    })
+    .catch(err => console.log(err));
 });
 avatarPopup.setEventListeners();
 
 const openEditAvatar = document.querySelector(".profile__avatar");
 openEditAvatar.addEventListener("click", () => {
   avatarPopup.open();
-  editFormValidator.resetValidation();
+  avatarFormValidator.resetValidation();
 })
 
 // Popup for add card form.
@@ -153,7 +163,8 @@ const popupWithAddCard = new PopupWithForm(cardFormPopupSelector, () => {
       const cards = new Section({ item, renderer: addNewCard }, cardsContainer);
       cards.addItem(addNewCard(item));
       popupWithAddCard.close();
-    });
+    })
+    .catch(err => console.log(err));
 })
   
 popupWithAddCard.setEventListeners();
