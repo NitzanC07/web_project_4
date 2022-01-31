@@ -1,14 +1,14 @@
 class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._items = items;
+  constructor({ renderer }, containerSelector) {
+    // this._items = items;
     this._renderer = renderer;
     this._container = document.querySelector(containerSelector);
   }
 
   // Public method that renders all elements on the page.
-  renderer() {
-    this._items.forEach((data) => {
-      const card = this._renderer(data);
+  renderer(items) {
+    items.forEach((cardData) => {
+      const card = this._renderer(cardData);
       this.addItem(card);
     });
   }

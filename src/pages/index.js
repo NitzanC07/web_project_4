@@ -3,9 +3,7 @@ import { FormValidator } from "../components/FormValidator.js";
 import Section from "../components/Section.js";
 import {
   cardTemplate,
-  profileFormPopup,
   config,
-  cardFormPopup,
   cardsContainer,
   profileFormPopupSelector,
   cardFormPopupSelector,
@@ -21,7 +19,6 @@ import {
   popupImageDescription
 } from "../utils/constants.js";
 import Card from "../components/Card.js";
-import Popup from "../components/Popup.js";
 import PopupWithSubmit from '../components/PopupWithSubmit';
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
@@ -39,38 +36,25 @@ const api = new Api({
 
 let userId;
 
+const formValidators = {}
+
+// Enable validation
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector))
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement)
+    // Create the name of the form
+    const formName = formElement.getAttribute('name')
+
+   // Store a validator by the `name` of the form
+    formValidators[formName] = validator;
+   validator.enableValidation();
+  });
+};
+enableValidation(config);
+
 const imagePopup = new PopupWithImage(popupTypeImageSelector);
 imagePopup.setEventListeners();
-
-const editFormValidator = new FormValidator(config, profileFormPopup);
-const addCardFormValidator = new FormValidator(config, cardFormPopup);
-const avatarFormValidator = new FormValidator(config, changeAvatarPopupSelector);
-
-editFormValidator.enableValidation();
-addCardFormValidator.enableValidation();
-avatarFormValidator.enableValidation();
-
-
-
-api.getInitialCards()
-.then(items => {
-  const cards = new Section({ items, renderer: addNewCard }, cardsContainer);
-  cards.renderer();
-})
-.catch(err => console.log(err));
-
-api.getUserInfo()
-  .then(res => {
-    console.log("profile detailes from reload page: ", res);
-    userInfo.setUserInfo({name: res.name, about: res.about});
-    userInfo.setUserAvatar(res.avatar);
-    userId = res._id
-  })
-  .catch(err => console.log(err));
-
-
-  const popupAskForDelete = new PopupWithSubmit(popupForDeleteCard);
-  popupAskForDelete.setEventListeners()
 
 const addNewCard = (data) => {
   const card = new Card({
@@ -110,6 +94,24 @@ const addNewCard = (data) => {
   }, cardTemplate, userId);
   return card.createCard();
 };
+
+const cards = new Section({ renderer: addNewCard }, cardsContainer);
+
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cardsData]) => {
+    // console.log("user data", userData);
+    userInfo.setUserInfo({name: userData.name, about: userData.about});
+    userInfo.setUserAvatar(userData.avatar);
+    userId = userData._id
+    cards.renderer(cardsData);
+  })
+  .catch(err => {
+    console.log(err);
+});
+
+  const popupAskForDelete = new PopupWithSubmit(popupForDeleteCard);
+  popupAskForDelete.setEventListeners()
 
 // Popup for profile details form.
 const userInfo = new UserInfo(profileName, profileDescription, avatarPicture);
@@ -160,8 +162,7 @@ const popupWithAddCard = new PopupWithForm(cardFormPopupSelector, () => {
   
   api.createCard(data)
     .then(item => {
-      const cards = new Section({ item, renderer: addNewCard }, cardsContainer);
-      cards.addItem(addNewCard(item));
+      cards.renderer([item]);
       popupWithAddCard.close();
     })
     .catch(err => console.log(err));
@@ -172,5 +173,5 @@ popupWithAddCard.setEventListeners();
 const openAddCardForm = document.querySelector(".profile__add-button");
 openAddCardForm.addEventListener("click", () => {
   popupWithAddCard.open();
-  addCardFormValidator.resetValidation();
+  formValidators["add-place"].resetValidation();
 });
