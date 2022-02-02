@@ -7,7 +7,6 @@ class Api {
   customFetch(url, headers) {
     return fetch(url, headers)
     .then(res => res.ok ? res.json() : Promise.reject(res.statusText))
-    .catch(err => console.log(err))
   } 
 
   // other methods for working with the API

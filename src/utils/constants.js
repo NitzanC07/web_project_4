@@ -30,7 +30,5 @@ export const popupDescription = document.querySelector(
 // Image popup.
 export const popupTypeImageSelector = ".popup_type_image";
 // export const popupTypeImage = document.querySelector(".popup_type_image");
-export const popupImage = document.querySelector(".popup__image");
-export const popupImageDescription = document.querySelector(
-  ".popup__image-description"
-);
+export const popupImage = ".popup__image";
+export const popupImageDescription = ".popup__image-description";

@@ -53,14 +53,14 @@ const enableValidation = (config) => {
 };
 enableValidation(config);
 
-const imagePopup = new PopupWithImage(popupTypeImageSelector);
+const imagePopup = new PopupWithImage(popupTypeImageSelector, popupImage, popupImageDescription);
 imagePopup.setEventListeners();
 
 const addNewCard = (data) => {
   const card = new Card({
     data,
     handleCardClick: () => {
-      imagePopup.open(data, popupImage, popupImageDescription);
+      imagePopup.open(data);
     },
     handleLikeIcon: (cardId, userId, likesArray) => {
       if (!likesArray.find(user => user._id === userId )) {
@@ -86,9 +86,9 @@ const addNewCard = (data) => {
           .then((res) => {
             console.log("card is deleted", res);
             card.removeCard();
+            popupAskForDelete.close();
           })
           .catch(err => console.log(err));
-          popupAskForDelete.close();
       })
     }
   }, cardTemplate, userId);
@@ -117,10 +117,10 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
 const userInfo = new UserInfo(profileName, profileDescription, avatarPicture);
 const popupWithProfile = new PopupWithForm(profileFormPopupSelector, () => {
 const profileData = popupWithProfile.getInputsValues();
-  userInfo.setUserInfo(profileData);
   api.setUserInfo(profileData)
   .then((res) => {
     console.log("res", res);
+    userInfo.setUserInfo(profileData);
     popupWithProfile.close();
   })
   .catch(err => console.log(err));
@@ -136,7 +136,7 @@ openEditButton.addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
   popupName.value = userData.name;
   popupDescription.value = userData.about;
-  editFormValidator.resetValidation();
+  formValidators["edit-profile"].resetValidation();
 });
 
 const avatarPopup = new PopupWithForm(changeAvatarPopupSelector, () => { 
@@ -153,7 +153,7 @@ avatarPopup.setEventListeners();
 const openEditAvatar = document.querySelector(".profile__avatar");
 openEditAvatar.addEventListener("click", () => {
   avatarPopup.open();
-  avatarFormValidator.resetValidation();
+  formValidators["avatar"].resetValidation();
 })
 
 // Popup for add card form.
