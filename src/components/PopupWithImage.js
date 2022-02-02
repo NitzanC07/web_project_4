@@ -1,6 +1,4 @@
 import Popup from "../components/Popup.js";
-// import { popupDescription, popupImage, popupImageDescription } from "../utils/constants.js";
-// import * as constants from "../../src/utils/constants.js";
 
 class PopupWithImage extends Popup {
 
