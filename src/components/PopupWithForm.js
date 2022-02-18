@@ -11,7 +11,6 @@ class PopupWithForm extends Popup {
 
   // Private method which collect data from all the input fields.
   getInputsValues() {
-    // const inputs = Array.from(this._form.querySelectorAll(".popup__input"));
     const inputsValues = {};
     this._inputs.forEach((input) => {
       inputsValues[input.name] = input.value;
